@@ -555,11 +555,8 @@ function makeSchedule() {
     for (let i = 0; i < names.length; i++) {
 
         if (!names[i]) {
-
             alert(`${i + 1}번 이름을 입력해 주세요.`);
-
             inputs[i].focus();
-
             return;
         }
     }
@@ -576,63 +573,106 @@ function makeSchedule() {
     const endMinutes =
         startMinutes + 120;
 
-    const assignments =
-        makeAssignments(names, startMinutes);
-
     const schedule =
         document.getElementById("schedule");
 
     schedule.innerHTML = "";
 
-    /*
-     * 이름별 결과를 표시합니다.
-     * 5명은 사용자가 알려주신 순서 그대로,
-     * 6/7명은 10분 간격의 2회 배정입니다.
-     */
-    names.forEach((name, i) => {
+    /* 6명은 2명씩 묶어서 표시
+       1·2번 : 10:00, 11:00
+       3·4번 : 10:20, 11:20
+       5·6번 : 10:40, 11:40
+    */
+    if (peopleCount === 6) {
 
-        const times =
-            assignments[i]
-            .filter(t => t < endMinutes)
-            .map(t => formatTime(t).replace("오전 ", "").replace("오후 ", ""));
+        const groups = [
+            [0, 1],
+            [2, 3],
+            [4, 5]
+        ];
 
-        const item =
-            document.createElement("div");
+        groups.forEach((group, index) => {
 
-        item.className =
-            "schedule-item";
+            const firstTime =
+                startMinutes + index * 20;
 
-        const resultLine = document.createElement("div");
-        resultLine.className = "schedule-names";
+            const secondTime =
+                firstTime + 60;
 
-        // 신청자(작성자) 이름을 반드시 결과에 직접 표시
-        resultLine.textContent =
-            `${i + 1}번 - ${name} : ${times.join(", ")}`;
+            const item =
+                document.createElement("div");
 
-        item.appendChild(resultLine);
+            item.className = "schedule-item";
 
-        schedule.appendChild(item);
-    });
+            item.innerHTML = `
+                <div class="schedule-names">
+                    ${group[0] + 1}번, ${group[1] + 1}번
+                    ${names[group[0]]}, ${names[group[1]]}
+                    : ${formatShortTime(firstTime)}, ${formatShortTime(secondTime)}
+                </div>
+            `;
 
-    document.getElementById("resultTitle").innerText =
-        `📋 전시대 임명 (${peopleCount}명)`;
+            schedule.appendChild(item);
+        });
+
+    } else {
+
+        const assignments =
+            makeAssignments(names, startMinutes);
+
+        names.forEach((name, i) => {
+
+            const times =
+                assignments[i]
+                .filter(t => t < endMinutes)
+                .map(t => formatShortTime(t));
+
+            const item =
+                document.createElement("div");
+
+            item.className = "schedule-item";
+
+            item.innerHTML = `
+                <div class="schedule-names">
+                    ${i + 1}번 - ${name} : ${times.join(", ")}
+                </div>
+            `;
+
+            schedule.appendChild(item);
+        });
+    }
 
     document.getElementById("resultInfo").innerHTML =
-        `시작 : ${formatTime(startMinutes)}<br>
+        `<strong>📋 전시대 임명 (${peopleCount}명)</strong><br>
+         시작 : ${formatTime(startMinutes)}<br>
          종료 : ${formatTime(endMinutes)}`;
 
     document.getElementById("result")
         .style.display = "block";
 
     setTimeout(() => {
-
         document.getElementById("result")
             .scrollIntoView({
                 behavior: "smooth",
                 block: "start"
             });
-
     }, 100);
+}
+
+
+/* 결과에 표시할 시간: 오전/오후 없이 10:00 형태 */
+function formatShortTime(totalMinutes) {
+
+    totalMinutes =
+        ((totalMinutes % 1440) + 1440) % 1440;
+
+    const hour =
+        Math.floor(totalMinutes / 60);
+
+    const minute =
+        totalMinutes % 60;
+
+    return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 }
 
 /* 공유용 텍스트 */

@@ -602,17 +602,20 @@ function makeSchedule() {
         item.className =
             "schedule-item";
 
-        item.innerHTML = `
-            <div class="schedule-names">
-                ${i + 1}번 - ${name} : ${times.join(", ")}
-            </div>
-        `;
+        const resultLine = document.createElement("div");
+        resultLine.className = "schedule-names";
+
+        // 신청자(작성자) 이름을 반드시 결과에 직접 표시
+        resultLine.textContent =
+            `${i + 1}번 - ${name} : ${times.join(", ")}`;
+
+        item.appendChild(resultLine);
 
         schedule.appendChild(item);
     });
 
     document.getElementById("resultTitle").innerText =
-        `전시대 임명 (${peopleCount}명)`;
+        `📋 전시대 임명 (${peopleCount}명)`;
 
     document.getElementById("resultInfo").innerHTML =
         `시작 : ${formatTime(startMinutes)}<br>

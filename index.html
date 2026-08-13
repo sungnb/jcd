@@ -326,9 +326,7 @@ input[type="time"] {
     <!-- 결과 -->
     <div class="card result" id="result">
 
-        <div class="result-title" id="resultTitle">
-            전시대 임명
-        </div>
+        <div class="result-title" id="resultTitle"></div>
 
         <div class="result-sub" id="resultInfo"></div>
 
@@ -604,10 +602,23 @@ function makeSchedule() {
 
             item.className = "schedule-item";
 
+            // 같은 이름을 여러 번 입력한 경우에만 번호를 붙여 구분합니다.
+            const name1 = names[group[0]];
+            const name2 = names[group[1]];
+
+            const displayName1 =
+                names.filter(n => n === name1).length > 1
+                    ? `${name1}${group[0] + 1}`
+                    : name1;
+
+            const displayName2 =
+                names.filter(n => n === name2).length > 1
+                    ? `${name2}${group[1] + 1}`
+                    : name2;
+
             item.innerHTML = `
                 <div class="schedule-names">
-                    ${names[group[0]]}, ${names[group[1]]}
-                    : ${formatShortTime(firstTime)}, ${formatShortTime(secondTime)}
+                    ${displayName1}, ${displayName2} : ${formatShortTime(firstTime)}, ${formatShortTime(secondTime)}
                 </div>
             `;
 

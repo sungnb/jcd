@@ -603,7 +603,7 @@ function makeSchedule() {
 
         item.innerHTML = `
             <div class="schedule-time">
-                ${i + 1}번 · ${name}
+                ${i + 1}번 - ${name}
             </div>
 
             <div class="schedule-names">
@@ -614,8 +614,10 @@ function makeSchedule() {
         schedule.appendChild(item);
     });
 
-    document.getElementById("resultInfo").innerText =
-        `${peopleCount}명 · ${formatTime(startMinutes)} 시작 · ${formatTime(endMinutes)} 종료 · 총 2시간`;
+    document.getElementById("resultInfo").innerHTML =
+        `<strong>전시대 임명표 (${peopleCount}명)</strong><br>
+         시작 : ${formatTime(startMinutes)}<br>
+         종료 : ${formatTime(endMinutes)}`;
 
     document.getElementById("result")
         .style.display = "block";
@@ -641,9 +643,9 @@ function getShareText() {
         document.querySelectorAll(".schedule-item");
 
     let text =
-        "📋 전시대 임명표\n\n";
+        "📋 " + document.querySelector(".result-title").innerText + "\n";
 
-    text += info + "\n\n";
+    text += info.replace(/<br\s*\/?\s*>/gi, "\n").replace(/<[^>]*>/g, "") + "\n";
 
     items.forEach((item) => {
 

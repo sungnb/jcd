@@ -602,23 +602,14 @@ function makeSchedule() {
 
             item.className = "schedule-item";
 
-            // 같은 이름을 여러 번 입력한 경우에만 번호를 붙여 구분합니다.
+            // 사용자가 실제로 입력한 이름을 그대로 표시합니다.
+            // 임의로 1, 2, 3 등의 번호를 이름 뒤에 붙이지 않습니다.
             const name1 = names[group[0]];
             const name2 = names[group[1]];
 
-            const displayName1 =
-                names.filter(n => n === name1).length > 1
-                    ? `${name1}${group[0] + 1}`
-                    : name1;
-
-            const displayName2 =
-                names.filter(n => n === name2).length > 1
-                    ? `${name2}${group[1] + 1}`
-                    : name2;
-
             item.innerHTML = `
                 <div class="schedule-names">
-                    ${displayName1}, ${displayName2} : ${formatShortTime(firstTime)}, ${formatShortTime(secondTime)}
+                    ${name1}, ${name2} : ${formatShortTime(firstTime)}, ${formatShortTime(secondTime)}
                 </div>
             `;
 

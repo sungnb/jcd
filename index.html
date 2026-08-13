@@ -645,20 +645,16 @@ function getShareText() {
         document.querySelectorAll(".schedule-item");
 
     let text =
-        "📋 " + document.querySelector(".result-title").innerText + "\n";
+        `📋 전시대 임명 (${peopleCount}명)\n`;
 
     text += info.replace(/<br\s*\/?\s*>/gi, "\n").replace(/<[^>]*>/g, "") + "\n";
 
     items.forEach((item) => {
 
-        const title =
-            item.querySelector(".schedule-time").innerText;
-
-        const times =
+        const line =
             item.querySelector(".schedule-names").innerText;
 
-        text +=
-            `${title} : ${times}\n`;
+        text += line + "\n";
     });
 
     return text;

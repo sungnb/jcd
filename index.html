@@ -325,8 +325,8 @@ input[type="time"] {
     <!-- 결과 -->
     <div class="card result" id="result">
 
-        <div class="result-title">
-            전시대 임명 결과
+        <div class="result-title" id="resultTitle">
+            전시대 임명
         </div>
 
         <div class="result-sub" id="resultInfo"></div>
@@ -614,9 +614,11 @@ function makeSchedule() {
         schedule.appendChild(item);
     });
 
+    document.getElementById("resultTitle").innerText =
+        `전시대 임명 (${peopleCount}명)`;
+
     document.getElementById("resultInfo").innerHTML =
-        `<strong>전시대 임명표 (${peopleCount}명)</strong><br>
-         시작 : ${formatTime(startMinutes)}<br>
+        `시작 : ${formatTime(startMinutes)}<br>
          종료 : ${formatTime(endMinutes)}`;
 
     document.getElementById("result")

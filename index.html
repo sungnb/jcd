@@ -198,6 +198,7 @@ input[type="time"] {
 .schedule-names {
     font-size: 17px;
     font-weight: 800;
+    line-height: 1.5;
 }
 
 /* 공유 */
@@ -602,12 +603,8 @@ function makeSchedule() {
             "schedule-item";
 
         item.innerHTML = `
-            <div class="schedule-time">
-                ${i + 1}번 - ${name}
-            </div>
-
             <div class="schedule-names">
-                ${times.join(", ")}
+                ${i + 1}번 - ${name} : ${times.join(", ")}
             </div>
         `;
 

@@ -606,7 +606,6 @@ function makeSchedule() {
 
             item.innerHTML = `
                 <div class="schedule-names">
-                    ${group[0] + 1}번, ${group[1] + 1}번
                     ${names[group[0]]}, ${names[group[1]]}
                     : ${formatShortTime(firstTime)}, ${formatShortTime(secondTime)}
                 </div>
@@ -642,9 +641,11 @@ function makeSchedule() {
         });
     }
 
+    document.getElementById("resultTitle").innerText =
+        `📋 전시대 임명 (${peopleCount}명)`;
+
     document.getElementById("resultInfo").innerHTML =
-        `<strong>📋 전시대 임명 (${peopleCount}명)</strong><br>
-         시작 : ${formatTime(startMinutes)}<br>
+        `시작 : ${formatTime(startMinutes)}<br>
          종료 : ${formatTime(endMinutes)}`;
 
     document.getElementById("result")
